@@ -21,7 +21,7 @@ services:
             - "8080:80"
         volumes:
             - ./docker/vhosts:/etc/apache2/sites-enabled
-            - ./:/var/www
+            - ./app:/var/www/series_tracker
         restart: always
         networks:
             - dev

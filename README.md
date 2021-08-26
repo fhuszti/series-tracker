@@ -1,5 +1,5 @@
 # Series-Tracker
-Une application simple permettant de suivre les films et séries déjà vus et ceux à voir.
+Une application simple permettant de suivre les séries déjà vues et celles à voir.
 
 ## Prérequis
 `Docker` et `docker-compose` doivent être installés sur la machine.
@@ -7,12 +7,22 @@ Une application simple permettant de suivre les films et séries déjà vus et c
 ## Installation
 - `git clone git@github.com:fhuszti/series-tracker.git series_tracker/`
 - `cd series_tracker/`
-- `cp series_tracker/.env series_tracker/.env.local`
+- `cp app/.env app/.env.local`
 - Modifier les valeurs de `DATABASE_USER`, `DATABASE_PASSWORD` et `DATABASE_NAME` dans le fichier `.env.local` nouvellement créé
 
 ## Lancement
-- `docker-compose --env-file ./series_tracker/.env.local up -d`
+- `docker-compose --env-file ./app/.env.local up -d`
 - Puis rendez-vous sur `http://series_tracker.local:8080/` pour voir le site
+
+## Import des données
+Les données de séries doivent être importées depuis l'API IMDb. Pour cela, vous devez [vous y inscrire](https://imdb-api.com/), récupérer votre clé API et la renseigner dans votre fichier `.env.local`.
+
+Vous avez droit à 100 appels API gratuits par jour.
+
+Vous pourrez ensuite relancer les containers (s'ils sont déjà actifs), puis vous connecter à une session bash sur votre container `www` (cf. section `Commandes utiles` ci-dessous), et taper les commandes suivantes :
+
+- `cd series_tracker/`
+- `php bin/console import:series`
 
 ## Commandes utiles
 - `docker exec -it www_docker_symfony bash` pour ouvrir une session bash dans le container `www`
