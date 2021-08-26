@@ -1,0 +1,33 @@
+services:
+    db:
+        image: mariadb:10.6
+        container_name: db_docker_symfony
+        restart: always
+        ports:
+            - "4306:3306"
+        volumes:
+            - db-data:/var/lib/mariadb
+        environment:
+            - MARIADB_ROOT_PASSWORD=root
+            - MARIADB_DATABASE=${DATABASE_NAME}
+            - MARIADB_USER=${DATABASE_USER}
+            - MARIADB_PASSWORD=${DATABASE_PASSWORD}
+        networks:
+            - dev
+    www:
+        build: docker
+        container_name: www_docker_symfony
+        ports:
+            - "8080:80"
+        volumes:
+            - ./docker/vhosts:/etc/apache2/sites-enabled
+            - ./:/var/www
+        restart: always
+        networks:
+            - dev
+
+networks:
+    dev:
+
+volumes:
+    db-data:
