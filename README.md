@@ -1,5 +1,5 @@
 # Series-Tracker
-Une application simple permettant de suivre les séries déjà vues et celles à voir.
+Une application simple permettant de suivre les séries déjà vues et celles à voir parmi les 250 meilleures séries de tous les temps, selon le classement IMDb.
 
 ## Prérequis
 `Docker` et `docker-compose` doivent être installés sur la machine.
@@ -19,9 +19,10 @@ Les données de séries doivent être importées depuis l'API IMDb. Pour cela, v
 
 Vous avez droit à 100 appels API gratuits par jour.
 
-Vous pourrez ensuite relancer les containers (s'ils sont déjà actifs), puis vous connecter à une session bash sur votre container `www` (cf. section `Commandes utiles` ci-dessous), et taper les commandes suivantes :
+Vous pourrez ensuite vous connecter à une session bash sur votre container `www` (cf. section `Commandes utiles` ci-dessous), et taper les commandes suivantes :
 
 - `cd series_tracker/`
+- `php bin/console d:m:m` *(seulement avant le premier import)*
 - `php bin/console import:series`
 
 ## Commandes utiles
