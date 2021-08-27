@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Series;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use function Doctrine\ORM\QueryBuilder;
 
 /**
  * @method Series|null find($id, $lockMode = null, $lockVersion = null)
@@ -17,6 +18,22 @@ class SeriesRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Series::class);
+    }
+
+    /**
+     * Compare les séries en bdd avec les IDs passés en paramètre et ressort les absents
+     * @param array $rankedIds Un tableau d'IDs IMDb
+     * @return array
+     */
+    public function findUnranked(array $rankedIds): array
+    {
+        $qb = $this->createQueryBuilder('s');
+
+        return $qb->andWhere($qb->expr()->notIn('s.imdbId', ':rankedIds'))
+            ->setParameter('rankedIds', $rankedIds)
+            ->getQuery()
+            ->getResult()
+            ;
     }
 
     // /**

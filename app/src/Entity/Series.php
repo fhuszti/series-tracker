@@ -3,17 +3,18 @@
 namespace App\Entity;
 
 use App\Repository\SeriesRepository;
+use App\Traits\TimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Une série importée depuis IMDb
  * @ORM\Entity(repositoryClass=SeriesRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class Series
 {
-    use TimestampableEntity;
+    use TimestampableTrait;
 
     /**
      * @ORM\Id
@@ -33,13 +34,13 @@ class Series
     private string $imdbId;
 
     /**
-     * @var int Le rang de la série sur IMDb
-     * @ORM\Column(type="smallint")
+     * @var int|null Le rang de la série sur IMDb (null si la série était top250 avant mais ne l'est plus)
+     * @ORM\Column(type="smallint", nullable=true)
      * @Assert\Positive(
      *     message="Le rang d'une série sur IMDb doit être supérieur à 0"
      * )
      */
-    private int $imdbRank;
+    private ?int $imdbRank;
 
     /**
      * @var string Le titre de la série
@@ -137,7 +138,7 @@ class Series
         return $this->imdbRank;
     }
 
-    public function setImdbRank(int $imdbRank): self
+    public function setImdbRank(?int $imdbRank): self
     {
         $this->imdbRank = $imdbRank;
 

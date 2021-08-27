@@ -42,9 +42,6 @@ class SeriesImportCommand extends Command
             ->setHelp("Cette commande permet d'importer les séries de l'API IMDb à la base de données locale.");
     }
 
-    /**
-     * @throws TransportExceptionInterface
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln([
@@ -59,7 +56,7 @@ class SeriesImportCommand extends Command
             return Command::FAILURE;
         }
 
-        //On commence par récupérer toutes les séries dispo sur IMDb
+        //On commence par récupérer toutes les séries du top 250 sur IMDb
         try {
             $output->writeln("Récupération des données sur l'API IMDb...");
             $response = $this->http->request('GET', self::IMDB_URL.$this->apiKey);
@@ -70,10 +67,10 @@ class SeriesImportCommand extends Command
                 return Command::FAILURE;
             }
 
-            $series = [];
+            $seriesList = [];
             $result = $response->toArray();
             if (isset($result["items"]))
-                $series = $result["items"];
+                $seriesList = $result["items"];
 
             $output->writeln(["...données récupérées avec succès.", ""]);
         } catch (\Exception $e) {
@@ -81,11 +78,16 @@ class SeriesImportCommand extends Command
             return Command::FAILURE;
         }
 
+        //On va retenir la liste des IDs des séries du top afin de pouvoir la comparer ensuite avec ceux déjà en bdd.
+        //Toute série présente en bdd et pas dans le top actuellement importé est une série anciennement top qui ne l'est plus.
+        //On lui retirera donc son ranking.
+        $doneIds = [];
+
         $output->writeln("Préparation des entités...");
-        $progressBar = new ProgressBar($output, count($series));
-        $progressBar->start();
+        $progressBarTop = new ProgressBar($output, count($seriesList));
+        $progressBarTop->start();
         //On boucle sur les résultats pour travailler nos données
-        foreach ($series as $dataSeries) {
+        foreach ($seriesList as $dataSeries) {
             //Si on a déjà la série en BDD, on va simplement la mettre à jour...
             $newSeries = $this->entityManager->getRepository(Series::class)->findOneBy(["imdbId" => $dataSeries["id"]]);
             //...sinon on la crée
@@ -100,13 +102,29 @@ class SeriesImportCommand extends Command
             $newSeries->setYear($dataSeries["year"] ?? null);
             $newSeries->setImageUrl($dataSeries["image"] ?? null);
 
+            //et on ajoute l'ID de la série traitée à la liste qu'on tient à jour
+            $doneIds[] = $dataSeries["id"];
+
             $this->entityManager->persist($newSeries);
-            $progressBar->advance();
+            $progressBarTop->advance();
         }
-        $progressBar->finish();
-        $output->writeln(["", "...enregistrement des données en BDD..."]);
+        $progressBarTop->finish();
+        $output->writeln(["", "", "...suppression du classement des séries n'apparaissant plus dans le top 250..."]);
+
+        $seriesOutOfTop = $this->entityManager->getRepository(Series::class)->findUnranked($doneIds);
+        $progressBarOutOfTop = new ProgressBar($output, count($seriesOutOfTop));
+        $progressBarOutOfTop->start();
+        //On retire toutes les séries concernées du classement
+        /** @var Series $seriesList */
+        foreach ($seriesOutOfTop as $series) {
+            $series->setImdbRank(null);
+            $this->entityManager->persist($series);
+            $progressBarOutOfTop->advance();
+        }
+        $progressBarOutOfTop->finish();
 
         //On enregistre tous nos résultats en bdd
+        $output->writeln(["", "", "...enregistrement des données en BDD..."]);
         $this->entityManager->flush();
         $output->writeln(["...toutes les données ont été enregistrées avec succès en BDD.", ""]);
 
