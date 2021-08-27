@@ -1,0 +1,14 @@
+@import "~bootstrap/scss/card";
+
+.card {
+	background-color: hsla(0, 100%, 100%, 0.1);
+}
+
+.card .img-fluid {
+	max-height: 150px;
+}
+
+.card .rank {
+	color: #dc3545;
+	font-weight: bold;
+}

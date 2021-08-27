@@ -1,15 +1,40 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello MainController!{% endblock %}
-
 {% block body %}
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+<main class="container">
+    <section class="row row-cols-lg-3 row-cols-md-2 row-cols-1 g-3">
+        {% for seriesElmt in series %}
+            <div class="col">
+                <article class="card">
+                    <div class="row g-0">
+                        <div class="col-4">
+                            <img src="{{ seriesElmt.imageUrl }}" class="img-fluid rounded-start" alt="Poster de {{ seriesElmt.title }}"/>
+                        </div>
+                        <div class="col-8">
+                            <section class="card-body">
+                                <h5 class="card-title">
+                                    <span class="rank">#{{ seriesElmt.imdbRank }}</span> {{ seriesElmt.title }}
+                                </h5>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/home/yurden/Projects/series_tracker/app/src/Controller/SeriesController.php'|file_link(0) }}">src/Controller/SeriesController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/home/yurden/Projects/series_tracker/app/templates/series/index.html.twig'|file_link(0) }}">templates/series/index.html.twig</a></code></li>
-    </ul>
-</div>
+                                <div class="d-flex justify-content-between mb-3">
+                                    <h6 class="card-subtitle text-muted">{{ seriesElmt.year }}</h6>
+                                    <h6 class="card-subtitle text-muted">
+                                        <i class="far fa-star" title="Note moyenne"></i> {{ seriesElmt.imdbRating }}
+                                    </h6>
+                                </div>
+
+                                <a href="#" class="card-link btn btn-sm btn-outline-secondary">
+                                    <i class="far fa-check-circle" title="Ajouter à mes séries vues"></i> Vu
+                                </a>
+                                <a href="#" class="card-link btn btn-sm btn-outline-secondary">
+                                    <i class="far fa-eye" title="Ajouter à mes séries à regarder"></i> A voir
+                                </a>
+                            </section>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        {% endfor %}
+    </section>
+</main>
 {% endblock %}

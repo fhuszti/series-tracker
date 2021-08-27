@@ -25,12 +25,40 @@ class SeriesRepository extends ServiceEntityRepository
      * @param array $rankedIds Un tableau d'IDs IMDb
      * @return array
      */
-    public function findUnranked(array $rankedIds): array
+    public function findAbsentees(array $rankedIds): array
     {
         $qb = $this->createQueryBuilder('s');
 
         return $qb->andWhere($qb->expr()->notIn('s.imdbId', ':rankedIds'))
             ->setParameter('rankedIds', $rankedIds)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    /**
+     * Trouve toutes les séries actuellement dans le top 250
+     * @return array
+     */
+    public function findRanked(): array
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere("s.imdbRank IS NOT NULL")
+            ->orderBy('s.imdbRank', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    /**
+     * Trouve toutes les séries qui ne sont plus dans le top 250
+     * @return array
+     */
+    public function findUnranked(): array
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere("s.imdbRank IS NULL")
+            ->orderBy('s.title', 'ASC')
             ->getQuery()
             ->getResult()
             ;

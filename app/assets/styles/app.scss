@@ -1,3 +1,15 @@
-body {
-    background-color: lightgray;
-}
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/reboot";
+@import '~@fortawesome/fontawesome-free/css/all.min.css';
+
+@import "~bootstrap/scss/utilities";
+@import "~bootstrap/scss/utilities/api";
+@import "~bootstrap/scss/containers";
+@import "~bootstrap/scss/grid";
+@import "~bootstrap/scss/buttons";
+
+@import "./layout/global";
+@import "./components/card";
+

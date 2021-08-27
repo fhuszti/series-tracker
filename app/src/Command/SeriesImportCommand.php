@@ -97,9 +97,9 @@ class SeriesImportCommand extends Command
             $newSeries->setImdbId($dataSeries["id"]);
             $newSeries->setTitle($dataSeries["title"]);
             $newSeries->setFullTitle($dataSeries["fullTitle"]);
-            $newSeries->setImdbRank($dataSeries["rank"]);
-            $newSeries->setImdbRating($dataSeries["imDbRating"]);
-            $newSeries->setYear($dataSeries["year"] ?? null);
+            $newSeries->setImdbRank((int) $dataSeries["rank"]);
+            $newSeries->setImdbRating((float) $dataSeries["imDbRating"]);
+            $newSeries->setYear((int) $dataSeries["year"] ?? null);
             $newSeries->setImageUrl($dataSeries["image"] ?? null);
 
             //et on ajoute l'ID de la série traitée à la liste qu'on tient à jour
@@ -111,7 +111,7 @@ class SeriesImportCommand extends Command
         $progressBarTop->finish();
         $output->writeln(["", "", "...suppression du classement des séries n'apparaissant plus dans le top 250..."]);
 
-        $seriesOutOfTop = $this->entityManager->getRepository(Series::class)->findUnranked($doneIds);
+        $seriesOutOfTop = $this->entityManager->getRepository(Series::class)->findAbsentees($doneIds);
         $progressBarOutOfTop = new ProgressBar($output, count($seriesOutOfTop));
         $progressBarOutOfTop->start();
         //On retire toutes les séries concernées du classement
