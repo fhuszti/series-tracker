@@ -8,7 +8,17 @@
 	max-height: 150px;
 }
 
+.card .fake-img {
+	height: 150px;
+	width: 109px;
+	background-color: #999999;
+}
+
 .card .rank {
 	color: #dc3545;
 	font-weight: bold;
+}
+
+.card .card-title {
+	font-size: 1.125rem;
 }

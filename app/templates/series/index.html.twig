@@ -25,15 +25,15 @@
     <section class="row">
         <h4 class="text-muted mb-0">Non-classées</h4>
 
-        <section class="row row-cols-lg-3 row-cols-md-2 row-cols-1 g-3">
-            {% if seriesUnranked is empty %}
-                <p class="font-italic text-muted">Aucune série à afficher.</p>
-            {% else %}
+        {% if seriesUnranked is empty %}
+            <p class="font-italic text-muted mt-3">Aucune série à afficher.</p>
+        {% else %}
+            <section class="row row-cols-lg-3 row-cols-md-2 row-cols-1 g-3">
                 {% for seriesElmt in seriesUnranked %}
                     {{ _.seriesCard(seriesElmt, false) }}
                 {% endfor %}
-            {% endif %}
-        </section>
+            </section>
+        {% endif %}
     </section>
 </main>
 {% endblock %}

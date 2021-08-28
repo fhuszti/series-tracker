@@ -3,7 +3,11 @@
         <article class="card">
             <div class="row g-0">
                 <div class="col-4">
-                    <img src="{{ seriesElmt.imageUrl }}" class="img-fluid rounded-start" alt="Poster de {{ seriesElmt.title }}"/>
+                    {% if seriesElmt.imageUrl %}
+                        <img src="{{ seriesElmt.imageUrl }}" class="img-fluid rounded-start" alt="Poster de {{ seriesElmt.title }}"/>
+                    {% else %}
+                        <div class="fake-img img-fluid rounded-start"></div>
+                    {% endif %}
                 </div>
                 <div class="col-8">
                     <section class="card-body">
