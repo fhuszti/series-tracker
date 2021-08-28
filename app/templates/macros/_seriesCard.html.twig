@@ -1,5 +1,6 @@
 {% macro seriesCard(seriesElmt, isRanked = true) %}
-    <div class="col" data-filter-target="card" data-is-seen="{% if seriesElmt.isSeen %}1{% endif %}" data-is-to-watch="{% if seriesElmt.isToWatch %}1{% endif %}">
+    <div class="col" data-filter-target="card" data-title="{% if isRanked %}#{{ seriesElmt.imdbRank }} {% endif %}{{ seriesElmt.title }}"
+         data-is-seen="{% if seriesElmt.isSeen %}1{% endif %}" data-is-to-watch="{% if seriesElmt.isToWatch %}1{% endif %}">
         <article class="card">
             <div class="row g-0">
                 <div class="col-4">
