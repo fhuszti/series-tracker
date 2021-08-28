@@ -1,40 +1,39 @@
 {% extends 'base.html.twig' %}
+{% import "macros/_seriesCard.html.twig" as _ %}
 
 {% block body %}
-<main class="container">
-    <section class="row row-cols-lg-3 row-cols-md-2 row-cols-1 g-3">
+<main class="container" data-controller="filter">
+    <section class="row row-cols-6 justify-content-center mb-4">
+        <div class="col">
+            <button type="button" class="btn btn-outline-secondary" data-action="filter#toggleSeen" data-filter-target="seen">
+                Séries vues
+            </button>
+        </div>
+        <div class="col">
+            <button type="button" class="btn btn-outline-secondary" data-action="filter#toggleToWatch" data-filter-target="toWatch">
+                Séries à voir
+            </button>
+        </div>
+    </section>
+
+    <section class="row row-cols-lg-3 row-cols-md-2 row-cols-1 g-3 mb-5">
         {% for seriesElmt in series %}
-            <div class="col">
-                <article class="card">
-                    <div class="row g-0">
-                        <div class="col-4">
-                            <img src="{{ seriesElmt.imageUrl }}" class="img-fluid rounded-start" alt="Poster de {{ seriesElmt.title }}"/>
-                        </div>
-                        <div class="col-8">
-                            <section class="card-body">
-                                <h5 class="card-title">
-                                    <span class="rank">#{{ seriesElmt.imdbRank }}</span> {{ seriesElmt.title }}
-                                </h5>
-
-                                <div class="d-flex justify-content-between mb-3">
-                                    <h6 class="card-subtitle text-muted">{{ seriesElmt.year }}</h6>
-                                    <h6 class="card-subtitle text-muted">
-                                        <i class="far fa-star" title="Note moyenne"></i> {{ seriesElmt.imdbRating }}
-                                    </h6>
-                                </div>
-
-                                <a href="#" class="card-link btn btn-sm btn-outline-secondary">
-                                    <i class="far fa-check-circle" title="Ajouter à mes séries vues"></i> Vu
-                                </a>
-                                <a href="#" class="card-link btn btn-sm btn-outline-secondary">
-                                    <i class="far fa-eye" title="Ajouter à mes séries à regarder"></i> A voir
-                                </a>
-                            </section>
-                        </div>
-                    </div>
-                </article>
-            </div>
+            {{ _.seriesCard(seriesElmt) }}
         {% endfor %}
+    </section>
+
+    <section class="row">
+        <h4 class="text-muted mb-0">Non-classées</h4>
+
+        <section class="row row-cols-lg-3 row-cols-md-2 row-cols-1 g-3">
+            {% if seriesUnranked is empty %}
+                <p class="font-italic text-muted">Aucune série à afficher.</p>
+            {% else %}
+                {% for seriesElmt in seriesUnranked %}
+                    {{ _.seriesCard(seriesElmt, false) }}
+                {% endfor %}
+            {% endif %}
+        </section>
     </section>
 </main>
 {% endblock %}
