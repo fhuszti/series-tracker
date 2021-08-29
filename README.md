@@ -2,13 +2,18 @@
 Une application simple permettant de suivre les séries déjà vues et celles à voir parmi les 250 meilleures séries de tous les temps, selon le classement IMDb.
 
 ## Prérequis
-`Docker` et `docker-compose` doivent être installés sur la machine.
+`Docker` et `docker-compose` doivent être installés sur la machine, ainsi que `composer` et `npm` (ou `yarn`).
 
 ## Installation
-- `git clone git@github.com:fhuszti/series-tracker.git series_tracker/`
-- `cd series_tracker/`
-- `cp app/.env app/.env.local`
-- Modifier les valeurs de `DATABASE_USER`, `DATABASE_PASSWORD` et `DATABASE_NAME` dans le fichier `.env.local` nouvellement créé
+- Commencer par ajouter l'entrée suivante dans le fichier hosts de votre machine : `127.0.0.1 series_tracker.local`
+- Cloner le projet à partir du repository et `cd` dans le dossier nouvellement créé
+- `cd app/`
+- `cp .env .env.local`
+- Modifier les valeurs de `DATABASE_USER`, `DATABASE_PASSWORD` et `DATABASE_NAME` dans le fichier `app/.env.local` nouvellement créé
+- `composer install`
+- `npm install`
+- `npm run build`
+- Revenir dans le dossier parent avec `cd ..`
 - Puis lancer les containers avec `docker-compose --env-file ./app/.env.local up -d`
 
 ## Import des données
