@@ -2,7 +2,7 @@ services:
     db:
         image: mariadb:10.6
         container_name: db_docker_symfony
-        restart: always
+        restart: on-failure
         ports:
             - "4306:3306"
         volumes:
@@ -22,7 +22,7 @@ services:
         volumes:
             - ./docker/vhosts:/etc/apache2/sites-enabled
             - ./app:/var/www/series_tracker
-        restart: always
+        restart: on-failure
         networks:
             - dev
 
