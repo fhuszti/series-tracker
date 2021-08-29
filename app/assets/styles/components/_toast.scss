@@ -1,0 +1,11 @@
+#toastColor {
+	width: 20px;
+	height: 20px;
+
+	.toast-success & {
+		background-color: $success;
+	}
+	.toast-danger & {
+		background-color: $danger;
+	}
+}

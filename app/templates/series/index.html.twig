@@ -10,13 +10,13 @@
         </div>
     </section>
 
-    <section class="row row-cols-6 justify-content-center mb-4">
-        <div class="col">
+    <section class="row mb-4">
+        <div class="col d-flex justify-content-end">
             <button type="button" class="btn btn-outline-secondary" data-action="filter#toggleSeen" data-filter-target="seen">
                 Séries vues
             </button>
         </div>
-        <div class="col">
+        <div class="col d-flex justify-content-start">
             <button type="button" class="btn btn-outline-secondary" data-action="filter#toggleToWatch" data-filter-target="toWatch">
                 Séries à voir
             </button>
@@ -40,5 +40,16 @@
         </section>
     </section>
     {% endif %}
+
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        <div id="liveToast" class="toast" role="alert">
+            <div class="toast-header">
+                <div class="rounded me-2" id="toastColor"></div>
+                <strong class="me-auto" id="toastTitle"></strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body" id="toastBody"></div>
+        </div>
+    </div>
 </main>
 {% endblock %}

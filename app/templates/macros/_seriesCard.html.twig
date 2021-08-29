@@ -1,6 +1,7 @@
 {% macro seriesCard(seriesElmt, isRanked = true) %}
-    <div class="col" data-filter-target="card" data-title="{% if isRanked %}#{{ seriesElmt.imdbRank }} {% endif %}{{ seriesElmt.title }}"
-         data-is-seen="{% if seriesElmt.isSeen %}1{% endif %}" data-is-to-watch="{% if seriesElmt.isToWatch %}1{% endif %}">
+    <div class="col" data-filter-target="card" data-series-target="card" data-title="{% if isRanked %}#{{ seriesElmt.imdbRank }} {% endif %}{{ seriesElmt.title }}"
+         {{ stimulus_controller('series', { updateSeriesUrl: path('update_series', { id: seriesElmt.id }) }) }}
+         data-is-seen="{{ seriesElmt.isSeen }}" data-is-to-watch="{{ seriesElmt.isToWatch }}">
         <article class="card">
             <div class="row g-0">
                 <div class="col-4">
@@ -23,12 +24,14 @@
                             </h6>
                         </div>
 
-                        <a href="#" class="card-link btn btn-sm {% if seriesElmt.isSeen %}btn-success{% else %}btn-outline-secondary{% endif %}">
-                            <i class="far fa-check-circle" title="Ajouter à mes séries vues"></i> Vu
-                        </a>
-                        <a href="#" class="card-link btn btn-sm  {% if seriesElmt.isToWatch %}btn-warning{% else %}btn-outline-secondary{% endif %}">
+                        <button type="button" class="card-link btn btn-sm {% if seriesElmt.isSeen %}btn-success{% else %}btn-outline-secondary{% endif %}"
+                                data-action="series#toggleSeen" data-series-target="seen" data-active="{{ seriesElmt.isSeen }}">
+                            <i class="far fa-check-circle" title="Ajouter à mes séries vues"></i> Vue
+                        </button>
+                        <button type="button" class="card-link btn btn-sm  {% if seriesElmt.isToWatch %}btn-warning{% else %}btn-outline-secondary{% endif %}"
+                                data-action="series#toggleToWatch" data-series-target="toWatch" data-active="{{ seriesElmt.isToWatch }}">
                             <i class="far fa-eye" title="Ajouter à mes séries à regarder"></i> À voir
-                        </a>
+                        </button>
                     </section>
                 </div>
             </div>
