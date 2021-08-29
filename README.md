@@ -9,10 +9,7 @@ Une application simple permettant de suivre les séries déjà vues et celles à
 - `cd series_tracker/`
 - `cp app/.env app/.env.local`
 - Modifier les valeurs de `DATABASE_USER`, `DATABASE_PASSWORD` et `DATABASE_NAME` dans le fichier `.env.local` nouvellement créé
-
-## Lancement
-- `docker-compose --env-file ./app/.env.local up -d`
-- Puis rendez-vous sur `http://series_tracker.local:8080/` pour voir le site
+- Puis lancer les containers avec `docker-compose --env-file ./app/.env.local up -d`
 
 ## Import des données
 Les données de séries doivent être importées depuis l'API IMDb. Pour cela, vous devez [vous y inscrire](https://imdb-api.com/), récupérer votre clé API et la renseigner dans votre fichier `.env.local`.
@@ -24,6 +21,14 @@ Vous pourrez ensuite vous connecter à une session bash sur votre container `www
 - `cd series_tracker/`
 - `php bin/console d:m:m` *(seulement avant le premier import)*
 - `php bin/console import:series`
+
+Vous pouvez relancer la commande quand vous le souhaitez par la suite. 
+
+Les séries déjà présentes en bdd seront simplement mises à jour, les nouvelles entrées dans le top seront créées dans votre base, et les séries déjà présentes en local mais qui ne sont plus présentes dans le top seront déclassées mais toujours visibles.
+
+## Utilisation
+
+Rendez-vous sur `http://series_tracker.local:8080/` pour accéder au site
 
 ## Commandes utiles
 - `docker exec -it www_docker_symfony bash` pour ouvrir une session bash dans le container `www`

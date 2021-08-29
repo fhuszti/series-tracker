@@ -5,7 +5,6 @@ namespace App\Repository;
 use App\Entity\Series;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use function Doctrine\ORM\QueryBuilder;
 
 /**
  * @method Series|null find($id, $lockMode = null, $lockVersion = null)
