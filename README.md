@@ -33,7 +33,7 @@ Les séries déjà présentes en bdd seront simplement mises à jour, les nouvel
 
 ## Utilisation
 
-Rendez-vous sur `http://series_tracker.local:8080/` pour accéder au site
+Le site est visible à l'adresse `http://series_tracker.local:8080/`.
 
 ## Commandes utiles
 - `docker exec -it www_docker_symfony bash` pour ouvrir une session bash dans le container `www`
